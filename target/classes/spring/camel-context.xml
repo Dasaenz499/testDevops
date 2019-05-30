@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<!-- You could also define a traditional camel context here -->
+
+	<bean
+		class="org.apache.camel.component.metrics.routepolicy.MetricsRoutePolicy"
+		id="policy">
+		<property name="useJmx" value="true" />
+		<property name="jmxDomain" value="fis.metrics" />
+	</bean>
+
+
+	<camelContext
+		xmlns="http://camel.apache.org/schema/spring">
+		<route id="test" routePolicyRef="policy">
+			<from uri="timer://foo?period=1000" />
+			<setHeader headerName="os"/>
+			<setBody>
+				<simple>Hello World from camel-contex.xml</simple>
+			</setBody>
+			<log message=">>> ${body}" />
+			<toD uri="metrics:counter:os.${header.os}"/>
+		</route>
+	</camelContext>
+
+</beans>

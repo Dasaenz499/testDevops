@@ -1,0 +1,15 @@
+---
+apiVersion: "v1"
+kind: "List"
+items:
+- apiVersion: "v1"
+  kind: "ImageStream"
+  metadata:
+    name: "testmetrics"
+  spec:
+    tags:
+    - from:
+        kind: "ImageStreamImage"
+        name: "testmetrics@sha256:aaffa4176a3f6070b30b70fc4f9787e52a0b0f9811ddf8203fd0c80c6e95c847"
+        namespace: "myproject"
+      name: "latest"
